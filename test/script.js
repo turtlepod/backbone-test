@@ -41,15 +41,11 @@
 
 		// Event listener for this view.
 		events: {
-			//'click #add-person': 'addOne',
 			'click .remove-person': 'removeOne',
 		},
 
 		// The Contructor of this view.
 		initialize: function() {
-
-			// If the model change, render the DOM.
-			//this.listenTo( this.model, 'change', this.render );
 			this.listenTo( this.collection, 'add', this.addOne );
 		},
 
@@ -85,6 +81,46 @@
 
 	// Load the data to this object.
 	myView.collection.add( bbPersons );
+
+
+	/* ================================================= */
+	/* OLD */
+	/* ================================================= */
+
+	var personTemplate = wp.template( 'bbt-li' );
+
+	// Enter click.
+	$( '#add-person-fields' ).bind( 'keypress', function(e){
+		if ( e.keyCode == 13 ){
+			e.preventDefault();
+			$( '#add-person' ).trigger( 'click' );
+			return false;
+		}
+	});
+
+	// Add person.
+	$( document ).on( 'click', '#add-person', function(e) {
+
+		// Add in DOM.
+		$( '#persons' ).append( personTemplate( {
+			name : $( '#name-input' ).val(),
+			url  : $( '#url-input' ).val(),
+		} ) );
+
+		// Clear fields.
+		$( '#name-input' ).val( '' );
+		$( '#url-input' ).val( '' );
+
+		// Refocus
+		$( '#name-input' ).focus();
+	} );
+
+	// Remove Person.
+	$( document ).on( 'click', '.remove-person', function() {
+		if ( confirm( 'Are you sure?' ) ) {
+			$( this ).parent( 'li' ).remove();
+		}
+	} );
 
 })( window );
 

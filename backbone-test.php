@@ -34,7 +34,11 @@ add_action( 'plugins_loaded', function() {
 			$option_group      = 'bbtest',
 			$option_name       = 'bbtest',
 			$sanitize_callback = function( $in ) {
-				return $in;
+				$out = array();
+				foreach( $in as $i ) {
+					$out[] = $i;
+				}
+				return $out;
 			}
 		);
 	} );
@@ -71,20 +75,6 @@ add_action( 'plugins_loaded', function() {
 				wp_enqueue_script( 'bbtest_settings', BBT_URI . 'test/script.js', array( 'jquery', 'backbone', 'jquery-ui-sortable', 'wp-util' ), BBT_VERSION, true );
 				$option = get_option( 'bbtest' );
 				$option = is_array( $option ) ? $option : array();
-				$option = array(
-					array(
-						'name' => 'a',
-						'url' => ''
-					),
-					array(
-						'name' => 'b',
-						'url' => ''
-					),
-					array(
-						'name' => 'c', 
-						'url' => ''
-					),
-				);
 				wp_localize_script( 'bbtest_settings', 'bbPersons', $option );
 			}
 		} );
