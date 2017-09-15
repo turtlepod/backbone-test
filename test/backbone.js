@@ -43,13 +43,12 @@
 	});
 
 	/**
-	 * A single speaker.
+	 * A single item.
 	 *
 	 * @since 1.0.0
 	 */
-	api.Views.Speaker = Backbone.View.extend({
+	api.Views.Item = Backbone.View.extend({
 		tagName: 'li',
-		template: wp.template( 'bbt-li' ),
 
 		/**
 		 * Handle events.
@@ -94,6 +93,15 @@
 
 			api.Speakers.remove( id ).destroy();
 		}
+	});
+
+	/**
+	 * A single speaker.
+	 *
+	 * @since 1.0.0
+	 */
+	api.Views.Speaker = api.Views.Item.extend({
+		template: wp.template( 'bbt-li' ),
 	});
 
 	/**
