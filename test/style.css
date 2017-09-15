@@ -1,0 +1,7 @@
+.remove-person {
+	color: #ccc;
+	cursor: pointer;
+}
+.remove-person:hover {
+	color: red;
+}
