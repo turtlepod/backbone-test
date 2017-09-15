@@ -16,6 +16,6 @@
 
 <script id="tmpl-bbt-li" type="text/html">
 	<i class="remove-person dashicons dashicons-trash" data-cid="{{data.cid}}"></i>
-	<input type="text" value="{{data.name}}">
-	<input type="text" value="{{data.url}}">
+	<input type="text" name="bbtest[{{data.cid}}][name]" value="{{data.name}}">
+	<input type="text" name="bbtest[{{data.cid}}][url]" value="{{data.url}}">
 </script>

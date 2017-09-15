@@ -34,7 +34,12 @@ add_action( 'plugins_loaded', function() {
 			$option_group      = 'bbtest',
 			$option_name       = 'bbtest',
 			$sanitize_callback = function( $in ) {
-				return $in;
+				// Remove key. Friendlier JSON.
+				$out = array();
+				foreach( $in as $i ) {
+					$out[] = $i;
+				}
+				return $out;
 			}
 		);
 	} );
@@ -69,14 +74,9 @@ add_action( 'plugins_loaded', function() {
 			if ( $page === $hook_suffix ) {
 				wp_enqueue_style( 'bbtest_settings', BBT_URI . 'test/style.css', array(), BBT_VERSION );
 				wp_enqueue_script( 'bbtest_settings', BBT_URI . 'test/backbone.js', array( 'jquery', 'wp-backbone', 'jquery-ui-sortable', 'wp-util' ), BBT_VERSION, true );
-				// $option = get_option( 'bbtest' );
-				// $option = is_array( $option ) ? $option : array();
-				wp_localize_script( 'bbtest_settings', 'bbPersons', array(
-					array(
-						'name' => 'Spencer',
-						'url' => 'http://spencerfinnell.com'
-					)
-				) );
+				$option = get_option( 'bbtest' );
+				$option = is_array( $option ) ? $option : array();
+				wp_localize_script( 'bbtest_settings', 'bbPersons', $option );
 			}
 		} );
 	} );

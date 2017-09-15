@@ -3,7 +3,7 @@
  *
  * @since 1.0.0
  */
-(function( window, undefined ){
+( function( window, undefined ) {
 
 	window.wp = window.wp || {};
 	var wp = window.wp;
@@ -25,12 +25,13 @@
 	 *
 	 * @since 1.0.0
 	 */
-	api.Models.Speaker = Backbone.Model.extend({
+	api.Models.Speaker = Backbone.Model.extend( {
 		defaults: {
 			name: null,
 			url: null,
 		}
-	});
+		// @todo: Should add validation methods.
+	} );
 
 	/**
 	 * Manage a collection of speakers.
@@ -38,9 +39,9 @@
 	 * @since 1.0.0
 	 * @uses api.Models.Speaker
 	 */
-	api.Collections.Speakers = Backbone.Collection.extend({
-		model: api.Models.Speaker
-	});
+	api.Collections.Speakers = Backbone.Collection.extend( {
+		model: api.Models.Speaker,
+	} );
 
 	/**
 	 * A single item.
@@ -180,6 +181,20 @@
 		},
 
 		/**
+		 * Constructor.
+		 */
+		initialize: function() {
+			var self = this;
+			this.$el.bind( 'keypress', function(e) {
+				if ( e.keyCode == 13 ){
+					e.preventDefault();
+					self.addSpeaker();
+					return false;
+				}
+			});
+		},
+
+		/**
 		 * Add a new speaker with filled in information.
 		 *
 		 * @since 1.0.0
@@ -192,6 +207,10 @@
 
 			// Add to collection.
 			api.Speakers.add( data );
+
+			// Reset.
+			this.$el.find( '#name-input' ).val( '' ).focus();
+			this.$el.find( '#url-input' ).val( '' );
 		}
 	});
 
@@ -227,4 +246,4 @@
 
 	new api.Views.SpeakerManager();
 
-}( window ));
+}( window ) );
