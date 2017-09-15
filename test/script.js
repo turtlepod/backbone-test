@@ -36,7 +36,9 @@ jQuery( document ).ready( function($) {
 
 	// Remove Person.
 	$( document ).on( 'click', '.remove-person', function() {
-		$( this ).parent( 'li' ).remove();
+		if ( confirm( 'Are you sure?' ) ) {
+			$( this ).parent( 'li' ).remove();
+		}
 	} );
 
 } );
