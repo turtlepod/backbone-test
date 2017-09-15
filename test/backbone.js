@@ -30,7 +30,6 @@
 			name: null,
 			url: null,
 		},
-		// @todo: Should add validation methods.
 		validate: function( attrs ) {
 			if ( ! attrs.name ) {
 				return 'Name field is required!';
@@ -50,6 +49,8 @@
 
 	/**
 	 * A single item.
+	 * This is a generic item, we can extend this object to speakers or other view.
+	 * example in api.Views.Speaker below, using "bbt-li" wp.template.
 	 *
 	 * @since 1.0.0
 	 */
@@ -103,6 +104,7 @@
 
 	/**
 	 * A single speaker.
+	 * This extending api.Views.Item views.
 	 *
 	 * @since 1.0.0
 	 */
@@ -140,6 +142,7 @@
 				model: speaker,
 			} );
 
+			// Check if model valid.
 			if ( ! view.model.isValid() ) {
 				alert( view.model.validationError );
 				return;
@@ -148,6 +151,7 @@
 			this.views.add( view );
 
 			// Keep a reference to this subview ID so we can destroy the HTML.
+			// "cid" attribute is added by backbone to every model.
 			return this._viewsByCid[ speaker.cid ] = view;
 		},
 
@@ -158,6 +162,12 @@
 		 */
 		removeOne: function( speaker ) {
 			var self = this;
+
+			/**
+			 * Need to get the view from internal copy.
+			 * Because the "remove" event already removed the model from collection.
+			 * So, actually it's no longer available. But the HTML is still here.
+			 */
 			var view = self._viewsByCid[ speaker.cid ];
 
 			if ( view ) {
@@ -188,7 +198,7 @@
 			'click #add-person': 'addSpeaker',
 
 			// Deal with Enter key here.
-			'keypress': 'enterKeyPress',
+			'keypress': 'keyPressCheck',
 		},
 
 		/**
@@ -199,9 +209,9 @@
 		},
 
 		/**
-		 * Key Press
+		 * Key Press Check
 		 */
-		enterKeyPress: function(e) {
+		keyPressCheck: function(e) {
 			if ( e.keyCode == 13 ){
 				e.preventDefault();
 				this.addSpeaker();
