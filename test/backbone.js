@@ -29,8 +29,13 @@
 		defaults: {
 			name: null,
 			url: null,
-		}
+		},
 		// @todo: Should add validation methods.
+		validate: function( attrs ) {
+			if ( ! attrs.name ) {
+				return 'Name field is required!';
+			}
+		}
 	} );
 
 	/**
@@ -178,20 +183,25 @@
 			'click #add-person': 'addSpeaker',
 
 			// Deal with Enter key here.
+			'keypress': 'enterKeyPress',
 		},
 
 		/**
 		 * Constructor.
 		 */
 		initialize: function() {
-			var self = this;
-			this.$el.bind( 'keypress', function(e) {
-				if ( e.keyCode == 13 ){
-					e.preventDefault();
-					self.addSpeaker();
-					return false;
-				}
-			});
+			
+		},
+
+		/**
+		 * Key Press
+		 */
+		enterKeyPress: function(e) {
+			if ( e.keyCode == 13 ){
+				e.preventDefault();
+				this.addSpeaker();
+				return false;
+			}
 		},
 
 		/**
