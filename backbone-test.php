@@ -68,10 +68,15 @@ add_action( 'plugins_loaded', function() {
 		add_action( 'admin_enqueue_scripts', function( $hook_suffix ) use( $page ) {
 			if ( $page === $hook_suffix ) {
 				wp_enqueue_style( 'bbtest_settings', BBT_URI . 'test/style.css', array(), BBT_VERSION );
-				wp_enqueue_script( 'bbtest_settings', BBT_URI . 'test/script.js', array( 'jquery', 'backbone', 'jquery-ui-sortable', 'wp-util' ), BBT_VERSION, true );
-				$option = get_option( 'bbtest' );
-				$option = is_array( $option ) ? $option : array();
-				wp_localize_script( 'bbtest_settings', 'bbPersons', $option );
+				wp_enqueue_script( 'bbtest_settings', BBT_URI . 'test/backbone.js', array( 'jquery', 'wp-backbone', 'jquery-ui-sortable', 'wp-util' ), BBT_VERSION, true );
+				// $option = get_option( 'bbtest' );
+				// $option = is_array( $option ) ? $option : array();
+				wp_localize_script( 'bbtest_settings', 'bbPersons', array(
+					array(
+						'name' => 'Spencer',
+						'url' => 'http://spencerfinnell.com'
+					)
+				) );
 			}
 		} );
 	} );
