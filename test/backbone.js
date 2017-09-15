@@ -35,7 +35,7 @@
 			if ( ! attrs.name ) {
 				return 'Name field is required!';
 			}
-		}
+		},
 	} );
 
 	/**
@@ -136,9 +136,14 @@
 		 * @since 1.0.0
 		 */
 		addOne: function( speaker ) {
-			var view = new api.Views.Speaker({
-				model: speaker
-			});
+			var view = new api.Views.Speaker( {
+				model: speaker,
+			} );
+
+			if ( ! view.model.isValid() ) {
+				alert( view.model.validationError );
+				return;
+			}
 
 			this.views.add( view );
 
