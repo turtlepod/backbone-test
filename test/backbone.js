@@ -56,6 +56,11 @@
 	 */
 	api.Views.Item = Backbone.View.extend({
 		tagName: 'li',
+		attributes: function() {
+			return {
+				'data-cid': this.model.cid,
+			};
+		},
 
 		/**
 		 * Handle events.
@@ -109,6 +114,7 @@
 	 * @since 1.0.0
 	 */
 	api.Views.Speaker = api.Views.Item.extend({
+		className: 'speaker',
 		template: wp.template( 'bbt-li' ),
 	});
 
@@ -126,8 +132,6 @@
 		 * @since 1.0.0
 		 */
 		initialize: function() {
-			this._viewsByCid = {};
-
 			this.listenTo( this.collection, 'add', this.addOne );
 			this.listenTo( this.collection, 'remove', this.removeOne );
 		},
@@ -149,10 +153,6 @@
 			}
 
 			this.views.add( view );
-
-			// Keep a reference to this subview ID so we can destroy the HTML.
-			// "cid" attribute is added by backbone to every model.
-			return this._viewsByCid[ speaker.cid ] = view;
 		},
 
 		/**
@@ -161,22 +161,7 @@
 		 * @since 1.0.0
 		 */
 		removeOne: function( speaker ) {
-			var self = this;
-
-			/**
-			 * Need to get the view from internal copy.
-			 * Because the "remove" event already removed the model from collection.
-			 * So, actually it's no longer available. But the HTML is still here.
-			 */
-			var view = self._viewsByCid[ speaker.cid ];
-
-			if ( view ) {
-				// Actually remove from HTML.
-				view.remove();
-
-				// Delete internal reference.
-				delete self._viewsByCid[ speaker.cid ];
-			}
+			$( '.speaker[data-cid=' + speaker.cid + ']' ).remove();
 		}
 	});
 
